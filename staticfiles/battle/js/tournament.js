@@ -85,16 +85,24 @@ function loadMatch(data) {
 }
 
 function loadPlayers(vidA, vidB) {
-    if (playerA) {
-        playerA.loadVideoById(vidA);
-        playerA.pauseVideo();
-    } else {
-        playerA = new YT.Player("player-a", {
-            videoId: vidA,
-            host: "https://www.youtube-nocookie.com",
-            playerVars: { rel: 0, modestbranding: 1 },
-        });
-    }
+    if (playerA) { playerA.destroy(); playerA = null; }
+    if (playerB) { playerB.destroy(); playerB = null; }
+
+    document.getElementById("player-a").innerHTML = "";
+    document.getElementById("player-b").innerHTML = "";
+
+    playerA = new YT.Player("player-a", {
+        videoId: vidA,
+        host: "https://www.youtube-nocookie.com",
+        playerVars: { rel: 0, modestbranding: 1 },
+    });
+
+    playerB = new YT.Player("player-b", {
+        videoId: vidB,
+        host: "https://www.youtube-nocookie.com",
+        playerVars: { rel: 0, modestbranding: 1 },
+    });
+}
 
     if (playerB) {
         playerB.loadVideoById(vidB);
