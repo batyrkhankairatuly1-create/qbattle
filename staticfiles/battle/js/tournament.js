@@ -91,6 +91,7 @@ function loadPlayers(vidA, vidB) {
     } else {
         playerA = new YT.Player("player-a", {
             videoId: vidA,
+            host: "https://www.youtube-nocookie.com",
             playerVars: { rel: 0, modestbranding: 1 },
         });
     }
@@ -101,6 +102,7 @@ function loadPlayers(vidA, vidB) {
     } else {
         playerB = new YT.Player("player-b", {
             videoId: vidB,
+            host: "https://www.youtube-nocookie.com",
             playerVars: { rel: 0, modestbranding: 1 },
         });
     }
@@ -184,6 +186,7 @@ function showWinnerScreen(winner) {
     } else {
         playerWinner = new YT.Player("player-winner", {
             videoId: winner.youtube_video_id,
+            host: "https://www.youtube-nocookie.com",
             playerVars: { rel: 0, modestbranding: 1, autoplay: 1 },
         });
     }
@@ -198,7 +201,6 @@ window.onYouTubeIframeAPIReady = function () {
 };
 
 document.getElementById("btn-start").addEventListener("click", initTournament);
-
 document.getElementById("vote-a").addEventListener("click", () => castVote(currentSongA.id));
 document.getElementById("vote-b").addEventListener("click", () => castVote(currentSongB.id));
 
