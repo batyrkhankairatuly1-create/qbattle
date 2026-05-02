@@ -35,6 +35,34 @@ function getCsrfToken() {
     return "";
 }
 
+function resetPlayerDiv(id) {
+    const el = document.getElementById(id);
+    el.innerHTML = "";
+    const newDiv = document.createElement("div");
+    newDiv.id = id;
+    el.parentNode.replaceChild(newDiv, el);
+}
+
+function loadPlayers(vidA, vidB) {
+    if (playerA) { try { playerA.destroy(); } catch(e) {} playerA = null; }
+    if (playerB) { try { playerB.destroy(); } catch(e) {} playerB = null; }
+
+    resetPlayerDiv("player-a");
+    resetPlayerDiv("player-b");
+
+    playerA = new YT.Player("player-a", {
+        videoId: vidA,
+        host: "https://www.youtube-nocookie.com",
+        playerVars: { rel: 0, modestbranding: 1 },
+    });
+
+    playerB = new YT.Player("player-b", {
+        videoId: vidB,
+        host: "https://www.youtube-nocookie.com",
+        playerVars: { rel: 0, modestbranding: 1 },
+    });
+}
+
 async function initTournament() {
     document.getElementById("btn-start").disabled = true;
     kpopWins = 0;
@@ -72,11 +100,6 @@ function loadMatch(data) {
     document.getElementById("vote-a").disabled = false;
     document.getElementById("vote-b").disabled = false;
 
-    const cardA = document.getElementById("card-a");
-    const cardB = document.getElementById("card-b");
-    cardA.style.animation = "none"; cardA.offsetHeight; cardA.style.animation = "";
-    cardB.style.animation = "none"; cardB.offsetHeight; cardB.style.animation = "";
-
     if (ytReady) {
         loadPlayers(currentSongA.youtube_video_id, currentSongB.youtube_video_id);
     } else {
@@ -84,44 +107,12 @@ function loadMatch(data) {
     }
 }
 
-function loadPlayers(vidA, vidB) {
-    if (playerA) { playerA.destroy(); playerA = null; }
-    if (playerB) { playerB.destroy(); playerB = null; }
-
-    document.getElementById("player-a").innerHTML = "";
-    document.getElementById("player-b").innerHTML = "";
-
-    playerA = new YT.Player("player-a", {
-        videoId: vidA,
-        host: "https://www.youtube-nocookie.com",
-        playerVars: { rel: 0, modestbranding: 1 },
-    });
-
-    playerB = new YT.Player("player-b", {
-        videoId: vidB,
-        host: "https://www.youtube-nocookie.com",
-        playerVars: { rel: 0, modestbranding: 1 },
-    });
-}
-
-    if (playerB) {
-        playerB.loadVideoById(vidB);
-        playerB.pauseVideo();
-    } else {
-        playerB = new YT.Player("player-b", {
-            videoId: vidB,
-            host: "https://www.youtube-nocookie.com",
-            playerVars: { rel: 0, modestbranding: 1 },
-        });
-    }
-}
-
 async function castVote(winnerId) {
     document.getElementById("vote-a").disabled = true;
     document.getElementById("vote-b").disabled = true;
 
-    if (playerA) playerA.pauseVideo();
-    if (playerB) playerB.pauseVideo();
+    if (playerA) { try { playerA.pauseVideo(); } catch(e) {} }
+    if (playerB) { try { playerB.pauseVideo(); } catch(e) {} }
 
     const loser = winnerId === currentSongA.id ? currentSongB : currentSongA;
     if (loser.genre === "kpop") kpopWins--;
@@ -189,15 +180,14 @@ function showWinnerScreen(winner) {
 
     showScreen("screen-winner");
 
-    if (playerWinner) {
-        playerWinner.loadVideoById(winner.youtube_video_id);
-    } else {
-        playerWinner = new YT.Player("player-winner", {
-            videoId: winner.youtube_video_id,
-            host: "https://www.youtube-nocookie.com",
-            playerVars: { rel: 0, modestbranding: 1, autoplay: 1 },
-        });
-    }
+    if (playerWinner) { try { playerWinner.destroy(); } catch(e) {} playerWinner = null; }
+    resetPlayerDiv("player-winner");
+
+    playerWinner = new YT.Player("player-winner", {
+        videoId: winner.youtube_video_id,
+        host: "https://www.youtube-nocookie.com",
+        playerVars: { rel: 0, modestbranding: 1, autoplay: 1 },
+    });
 }
 
 window.onYouTubeIframeAPIReady = function () {
@@ -215,7 +205,7 @@ document.getElementById("vote-b").addEventListener("click", () => castVote(curre
 document.getElementById("btn-restart").addEventListener("click", () => {
     showScreen("screen-start");
     document.getElementById("btn-start").disabled = false;
-    if (playerA) { playerA.destroy(); playerA = null; }
-    if (playerB) { playerB.destroy(); playerB = null; }
-    if (playerWinner) { playerWinner.destroy(); playerWinner = null; }
+    if (playerA) { try { playerA.destroy(); } catch(e) {} playerA = null; }
+    if (playerB) { try { playerB.destroy(); } catch(e) {} playerB = null; }
+    if (playerWinner) { try { playerWinner.destroy(); } catch(e) {} playerWinner = null; }
 });
