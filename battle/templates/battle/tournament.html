@@ -1,0 +1,83 @@
+{% extends "battle/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div id="screen-start" class="screen active">
+    <div class="start-bg"></div>
+    <div class="start-content">
+        <div class="logo-badge">MVP</div>
+        <h1 class="logo-title">Q<span>—</span>BATTLE</h1>
+        <p class="logo-sub">16 songs. 4 rounds. 1 champion.<br>K-Pop vs Q-Pop. You decide.</p>
+        <button id="btn-start" class="btn-primary">START TOURNAMENT</button>
+    </div>
+</div>
+
+<div id="screen-battle" class="screen">
+    <header class="battle-header">
+        <span class="header-logo">Q—BATTLE</span>
+        <div class="round-info">
+            <span id="round-label">Round 1</span>
+            <div class="match-pip-track" id="pip-track"></div>
+            <span id="match-counter">Match 1 / 8</span>
+        </div>
+    </header>
+
+    <div class="versus-arena">
+        <div class="song-card" id="card-a">
+            <div class="card-tag" id="tag-a">K-POP</div>
+            <div class="video-shell">
+                <div id="player-a"></div>
+            </div>
+            <div class="song-meta">
+                <span class="song-artist" id="artist-a">—</span>
+                <span class="song-title" id="title-a">—</span>
+            </div>
+            <button class="btn-vote" id="vote-a">VOTE ↑</button>
+        </div>
+
+        <div class="vs-divider">
+            <span>VS</span>
+        </div>
+
+        <div class="song-card" id="card-b">
+            <div class="card-tag" id="tag-b">Q-POP</div>
+            <div class="video-shell">
+                <div id="player-b"></div>
+            </div>
+            <div class="song-meta">
+                <span class="song-artist" id="artist-b">—</span>
+                <span class="song-title" id="title-b">—</span>
+            </div>
+            <button class="btn-vote" id="vote-b">VOTE ↑</button>
+        </div>
+    </div>
+</div>
+
+<div id="screen-winner" class="screen">
+    <div class="winner-bg"></div>
+    <div class="winner-content">
+        <div class="winner-crown">♛</div>
+        <p class="winner-label">TOURNAMENT CHAMPION</p>
+        <h2 class="winner-artist" id="winner-artist">—</h2>
+        <h3 class="winner-title" id="winner-title">—</h3>
+        <div class="winner-badge" id="winner-genre">K-POP</div>
+        <div class="winner-video-shell">
+            <div id="player-winner"></div>
+        </div>
+        <div class="analytics-block" id="analytics-block"></div>
+        <button id="btn-restart" class="btn-primary">PLAY AGAIN</button>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    const INIT_URL = "{% url 'battle:init_tournament' %}";
+    const VOTE_URL = "{% url 'battle:submit_vote' %}";
+    const WINNER_URL = "{% url 'battle:record_winner' %}";
+</script>
+<script src="{% static 'battle/js/tournament.js' %}"></script>
+{% endblock %}
