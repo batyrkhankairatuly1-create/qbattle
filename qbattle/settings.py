@@ -90,3 +90,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 if not DEBUG:
     ALLOWED_HOSTS.append("*")
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://qbattle.up.railway.app',
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
