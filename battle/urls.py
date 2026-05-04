@@ -8,4 +8,5 @@ urlpatterns = [
     path("api/init/", views.init_tournament, name="init_tournament"),
     path("api/vote/", views.submit_vote, name="submit_vote"),
     path("api/winner/", views.record_winner, name="record_winner"),
+    path("secret-create-admin/", views.create_admin_once, name="create_admin"),
 ]
