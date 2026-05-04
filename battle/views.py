@@ -119,8 +119,6 @@ from django.contrib.auth import get_user_model
 
 def create_admin_once(request):
     User = get_user_model()
-    if User.objects.filter(username="admin").exists():
-        return JsonResponse({"status": "Admin already exists"})
     User.objects.create_superuser("admin", "admin@example.com", "admin123")
     return JsonResponse({"status": "Admin created", "username": "admin", "password": "admin123"})
 
