@@ -11,3 +11,5 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("Admin user created"))
         else:
             self.stdout.write(self.style.WARNING("Admin user already exists"))
+            User.objects.create_superuser("admin", "admin@example.com", "admin123")
+            self.stdout.write(self.style.SUCCESS("Admin user created"))
