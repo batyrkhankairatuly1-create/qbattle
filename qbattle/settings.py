@@ -87,3 +87,6 @@ STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+if not DEBUG:
+    ALLOWED_HOSTS.append("*")
